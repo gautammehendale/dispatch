@@ -19,7 +19,7 @@ func BenchmarkEnqueue(b *testing.B) {
 	if err != nil {
 		b.Skipf("redis not available: %v", err)
 	}
-	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5432/dispatch?sslmode=disable")
+	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	if err != nil {
 		b.Skipf("postgres not available: %v", err)
 	}
@@ -42,7 +42,7 @@ func BenchmarkDequeue(b *testing.B) {
 	if err != nil {
 		b.Skipf("redis not available: %v", err)
 	}
-	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5432/dispatch?sslmode=disable")
+	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	if err != nil {
 		b.Skipf("postgres not available: %v", err)
 	}
@@ -67,7 +67,7 @@ func BenchmarkEnqueueParallel(b *testing.B) {
 	if err != nil {
 		b.Skipf("redis not available: %v", err)
 	}
-	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5432/dispatch?sslmode=disable")
+	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	if err != nil {
 		b.Skipf("postgres not available: %v", err)
 	}
@@ -91,7 +91,7 @@ func TestThroughput(t *testing.T) {
 	if err != nil {
 		t.Skipf("redis not available: %v", err)
 	}
-	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5432/dispatch?sslmode=disable")
+	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	if err != nil {
 		t.Skipf("postgres not available: %v", err)
 	}
@@ -174,7 +174,7 @@ func TestLatency(t *testing.T) {
 	if err != nil {
 		t.Skipf("redis not available: %v", err)
 	}
-	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5432/dispatch?sslmode=disable")
+	pg, err := store.NewPostgresStore("postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	if err != nil {
 		t.Skipf("postgres not available: %v", err)
 	}

@@ -211,10 +211,10 @@ The Dispatch dashboard gives you full visibility into your job pipeline in real-
 
 | Metric | Value |
 |--------|-------|
-| Enqueue throughput | **~3,000 jobs/sec** |
-| Dequeue + execute (no-op handler) | **~2,500 jobs/sec** |
-| p50 engine latency | **< 5ms** |
-| p99 engine latency | **< 25ms** |
+| Enqueue throughput | **~1,000 jobs/sec** |
+| Dequeue + execute (no-op handler) | **~1,000 jobs/sec** |
+| p50 engine latency | **~2ms** |
+| p99 engine latency | **~6ms** |
 | Graceful shutdown drain | **< 500ms** |
 | Memory footprint (backend) | **~30MB** |
 
