@@ -32,7 +32,7 @@ export function useJobs(status?: JobStatus, queue?: string) {
   }, [fetch]);
 
   const cancel = useCallback(async (id: string) => {
-    await axios.delete(`${API}/api/v1/jobs/${id}`);
+    await axios.post(`${API}/api/v1/jobs/${id}/cancel`);
     fetch();
   }, [fetch]);
 
