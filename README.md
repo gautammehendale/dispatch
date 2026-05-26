@@ -23,7 +23,7 @@
 ### **Distributed Task Queue Engine**
 *High-throughput, fault-tolerant background job processing — built from scratch in Go*
 
-[Live Demo](https://dispatch-beryl.vercel.app) · [Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [API Reference](#-api-reference) · [Dashboard](#-dashboard) · [Benchmarks](#-benchmarks)
+[Live Demo](https://dispatch-beryl.vercel.app) · [Demo Video](https://drive.google.com/file/d/1y13vL6driaw2cRXoksgF46W_uX2wOYqE/view?usp=sharing) · [Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [API Reference](#-api-reference) · [Dashboard](#-dashboard) · [Benchmarks](#-benchmarks)
 
 </div>
 
