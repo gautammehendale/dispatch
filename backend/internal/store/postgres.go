@@ -136,7 +136,7 @@ func (p *PostgresStore) ListJobs(ctx context.Context, status, queue string, limi
 	args = append(args, limit, offset)
 	rows, err := p.db.QueryContext(ctx,
 		"SELECT id, type, priority, status, queue, attempts, max_retries, created_at, updated_at, error, worker_id "+
-			"FROM jobs "+where+" ORDER BY created_at DESC LIMIT $"+fmt.Sprint(i)+" OFFSET $"+fmt.Sprint(i+1),
+			"FROM jobs "+where+" ORDER BY priority DESC, created_at DESC LIMIT $"+fmt.Sprint(i)+" OFFSET $"+fmt.Sprint(i+1),
 		args...)
 	if err != nil {
 		return nil, 0, err
