@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	redisAddr := getEnv("REDIS_ADDR", "localhost:6379")
+	redisAddr := getEnv("REDIS_URL", getEnv("REDIS_ADDR", "localhost:6379"))
 	postgresDSN := getEnv("POSTGRES_DSN", "postgres://dispatch:dispatch@localhost:5433/dispatch?sslmode=disable")
 	port := getEnv("PORT", "8080")
 	concurrency := 4

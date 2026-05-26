@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -24,12 +25,21 @@ type RedisStore struct {
 }
 
 func NewRedisStore(addr string) (*RedisStore, error) {
-	client := redis.NewClient(&redis.Options{
-		Addr:         addr,
-		DialTimeout:  5 * time.Second,
-		ReadTimeout:  3 * time.Second,
-		WriteTimeout: 3 * time.Second,
-	})
+	var opts *redis.Options
+	if strings.HasPrefix(addr, "redis://") || strings.HasPrefix(addr, "rediss://") {
+		var err error
+		opts, err = redis.ParseURL(addr)
+		if err != nil {
+			return nil, fmt.Errorf("redis parse url: %w", err)
+		}
+	} else {
+		opts = &redis.Options{Addr: addr}
+	}
+	opts.DialTimeout = 5 * time.Second
+	opts.ReadTimeout = 3 * time.Second
+	opts.WriteTimeout = 3 * time.Second
+
+	client := redis.NewClient(opts)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := client.Ping(ctx).Err(); err != nil {
