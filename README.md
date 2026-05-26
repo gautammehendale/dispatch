@@ -218,6 +218,26 @@ The Dispatch dashboard gives you full visibility into your job pipeline in real-
 | Graceful shutdown drain | **< 500ms** |
 | Memory footprint (backend) | **~30MB** |
 
+### Verified Test Output
+
+```
+=== RUN   TestThroughput
+  Throughput benchmark (4 workers, 5s)
+  Jobs processed : 5236
+  Elapsed        : 5.00s
+  Jobs/sec       : 1047
+--- PASS: TestThroughput (5.01s)
+
+=== RUN   TestLatency
+  Latency benchmark (200 jobs)
+  p50 : 1.605ms
+  p95 : 1.948ms
+  p99 : 2.893ms
+--- PASS: TestLatency (0.42s)
+```
+
+> Run with: `cd backend && go test ./internal/queue/... -v -run "TestThroughput|TestLatency" -timeout 60s`
+
 ---
 
 ## Project Structure
