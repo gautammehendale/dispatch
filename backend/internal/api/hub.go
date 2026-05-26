@@ -14,13 +14,24 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
+type client struct {
+	conn *websocket.Conn
+	mu   sync.Mutex
+}
+
+func (c *client) write(data []byte) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.conn.WriteMessage(websocket.TextMessage, data)
+}
+
 type Hub struct {
-	clients map[*websocket.Conn]struct{}
+	clients map[*websocket.Conn]*client
 	mu      sync.RWMutex
 }
 
 func NewHub() *Hub {
-	return &Hub{clients: make(map[*websocket.Conn]struct{})}
+	return &Hub{clients: make(map[*websocket.Conn]*client)}
 }
 
 func (h *Hub) Broadcast(event *models.WSEvent) {
@@ -29,10 +40,15 @@ func (h *Hub) Broadcast(event *models.WSEvent) {
 		return
 	}
 	h.mu.RLock()
-	defer h.mu.RUnlock()
-	for conn := range h.clients {
-		if err := conn.WriteMessage(websocket.TextMessage, data); err != nil {
-			log.Printf("[hub] write error, removing client: %v", err)
+	clients := make([]*client, 0, len(h.clients))
+	for _, c := range h.clients {
+		clients = append(clients, c)
+	}
+	h.mu.RUnlock()
+
+	for _, c := range clients {
+		if err := c.write(data); err != nil {
+			log.Printf("[hub] write error: %v", err)
 		}
 	}
 }
@@ -43,8 +59,9 @@ func (h *Hub) ServeWS(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[hub] upgrade: %v", err)
 		return
 	}
+	c := &client{conn: conn}
 	h.mu.Lock()
-	h.clients[conn] = struct{}{}
+	h.clients[conn] = c
 	h.mu.Unlock()
 
 	defer func() {
