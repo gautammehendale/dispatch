@@ -29,6 +29,7 @@ func NewRouter(h *Handler, hub *Hub) http.Handler {
 			r.Get("/", h.ListJobs)
 			r.Get("/{id}", h.GetJob)
 			r.Delete("/{id}", h.CancelJob)
+			r.Post("/{id}/cancel", h.CancelJob)
 			r.Post("/{id}/retry", h.RetryJob)
 		})
 
