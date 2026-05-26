@@ -166,6 +166,14 @@ func (r *RedisStore) ResumeQueue(ctx context.Context, name string) error {
 	return r.client.Del(ctx, fmt.Sprintf(pausedKeyFmt, name)).Err()
 }
 
+func (r *RedisStore) IsQueuePaused(ctx context.Context, name string) (bool, error) {
+	val, err := r.client.Get(ctx, fmt.Sprintf(pausedKeyFmt, name)).Bool()
+	if err == redis.Nil {
+		return false, nil
+	}
+	return val, err
+}
+
 func (r *RedisStore) QueueDepths(ctx context.Context, queueName string) (map[string]int64, error) {
 	priorities := []struct {
 		name  string

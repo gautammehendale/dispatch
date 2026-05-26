@@ -104,7 +104,8 @@ func (h *Handler) ListQueues(w http.ResponseWriter, r *http.Request) {
 		for _, d := range depths {
 			total += d
 		}
-		stats = append(stats, models.QueueStats{Name: q, Depth: total})
+		paused, _ := h.redis.IsQueuePaused(r.Context(), q)
+		stats = append(stats, models.QueueStats{Name: q, Depth: total, Paused: paused})
 	}
 	writeJSON(w, http.StatusOK, stats)
 }
