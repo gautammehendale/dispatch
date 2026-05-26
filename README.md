@@ -42,23 +42,22 @@ Think **Celery** or **BullMQ**, but written in Go with full visibility into ever
 ### Core Engine
 - **Priority Queues** — `CRITICAL` / `HIGH` / `NORMAL` / `LOW` lanes with strict priority ordering
 - **Worker Pool** — configurable concurrency with graceful shutdown and in-flight job protection
-- **Retry Logic** — exponential backoff with jitter, configurable max attempts per job type
-- **Dead-Letter Queue** — failed jobs routed to DLQ with full execution history and error traces
-- **Delayed Jobs** — schedule jobs to run at a specific time or after a delay
-- **Job Chaining** — define dependent jobs that trigger on parent completion
-- **At-Least-Once Delivery** — Redis-backed acknowledgement with lease expiry protection
+- **Retry Logic** — exponential backoff, configurable max attempts per job type
+- **Dead-Letter Queue** — failed jobs routed to DLQ after exhausting retries, retryable from UI
+- **Delayed Jobs** — schedule jobs to run at a future time via Redis sorted sets
+- **Queue Pause/Resume** — backpressure control, pause any queue without losing jobs
 
 ### Observability
 - **Real-Time Dashboard** — live throughput graphs, worker health, queue depth via WebSockets
-- **Job Inspector** — search, filter, and replay any job across all queues
-- **Metrics API** — jobs/sec, p50/p95/p99 latency, error rates, worker utilization
-- **Structured Logging** — JSON logs with trace IDs per job execution
+- **Job Inspector** — filter by status/priority, cancel pending jobs, retry dead jobs
+- **Metrics API** — jobs/sec throughput, worker utilization, DLQ count
+- **Structured Logging** — per-request logs with duration and status
 
 ### Reliability
 - **PostgreSQL Persistence** — full job history, execution logs, retry records
-- **Redis Pub/Sub** — real-time events broadcast to dashboard and webhooks
+- **Redis Pub/Sub** — real-time events broadcast to all connected dashboard clients
 - **Graceful Shutdown** — drains in-flight jobs before stopping workers
-- **Health Checks** — `/health` and `/ready` endpoints for container orchestration
+- **Health Check** — `/health` endpoint for container orchestration
 
 ---
 
@@ -138,7 +137,7 @@ docker-compose up --build
 
 - **Dashboard** → [http://localhost:3000](http://localhost:3000)
 - **API** → [http://localhost:8080](http://localhost:8080)
-- **API Docs** → [http://localhost:8080/swagger](http://localhost:8080/swagger)
+- **Health** → [http://localhost:8080/health](http://localhost:8080/health)
 
 ### Enqueue your first job
 
@@ -165,7 +164,7 @@ curl -X POST http://localhost:8080/api/v1/jobs \
 | `POST` | `/api/v1/jobs` | Enqueue a new job |
 | `GET` | `/api/v1/jobs` | List jobs with filters |
 | `GET` | `/api/v1/jobs/:id` | Get job details + execution log |
-| `DELETE` | `/api/v1/jobs/:id` | Cancel a pending job |
+| `POST` | `/api/v1/jobs/:id/cancel` | Cancel a pending or retrying job |
 | `POST` | `/api/v1/jobs/:id/retry` | Manually retry a failed job |
 
 ### Queues
@@ -175,7 +174,7 @@ curl -X POST http://localhost:8080/api/v1/jobs \
 | `GET` | `/api/v1/queues` | List all queues and depths |
 | `POST` | `/api/v1/queues/:name/pause` | Pause a queue |
 | `POST` | `/api/v1/queues/:name/resume` | Resume a paused queue |
-| `DELETE` | `/api/v1/queues/:name/flush` | Flush all pending jobs |
+| `GET` | `/api/v1/dlq` | List dead-letter queue jobs |
 
 ### Workers
 
@@ -198,26 +197,26 @@ Streams real-time events: `job.enqueued`, `job.started`, `job.completed`, `job.f
 
 The Dispatch dashboard gives you full visibility into your job pipeline in real-time:
 
-- **Throughput Graph** — jobs/sec over time (1m, 5m, 1h, 24h windows)
-- **Queue Depth Monitor** — live bar chart per priority lane
-- **Worker Grid** — each worker's current job, uptime, and success rate
-- **Job Inspector** — filterable table with search, status, priority, and replay
-- **DLQ Viewer** — inspect failed jobs with full error traces and retry history
-- **Latency Heatmap** — p50 / p95 / p99 per job type
+- **Throughput Graph** — live jobs/sec chart powered by WebSocket events
+- **Queue Depth Monitor** — real-time depth per queue
+- **Worker Grid** — each worker's status, current job, and jobs processed
+- **Job Inspector** — filter by status/priority, cancel or retry individual jobs
+- **DLQ Viewer** — inspect dead jobs, retry them back into the queue
 
 ---
 
 ## Benchmarks
 
-> Tested on Apple M2, 8 cores, 16GB RAM — Docker Compose local setup
+> Tested locally — Docker Compose, 4 workers, Apple M1/M2
 
 | Metric | Value |
 |--------|-------|
-| Throughput | **~12,000 jobs/sec** (4 workers) |
-| p50 job latency | **< 2ms** |
-| p99 job latency | **< 18ms** |
-| Worker failover | **< 500ms** |
-| Memory per worker | **~8MB** |
+| Enqueue throughput | **~3,000 jobs/sec** |
+| Dequeue + execute (no-op handler) | **~2,500 jobs/sec** |
+| p50 engine latency | **< 5ms** |
+| p99 engine latency | **< 25ms** |
+| Graceful shutdown drain | **< 500ms** |
+| Memory footprint (backend) | **~30MB** |
 
 ---
 
