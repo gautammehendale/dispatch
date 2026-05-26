@@ -231,8 +231,13 @@ func (r *RedisStore) DLQJobs(ctx context.Context) ([]*models.Job, error) {
 	if err != nil {
 		return nil, err
 	}
+	seen := make(map[string]bool)
 	jobs := make([]*models.Job, 0, len(ids))
 	for _, id := range ids {
+		if seen[id] {
+			continue
+		}
+		seen[id] = true
 		job, err := r.GetJob(ctx, id)
 		if err == nil && job.Status == models.StatusDead {
 			jobs = append(jobs, job)
