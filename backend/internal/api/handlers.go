@@ -129,6 +129,7 @@ func (h *Handler) GetMetrics(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	counters := h.redis.GetCounters(ctx)
 	workers := h.pool.Workers()
+	dlqJobs, _ := h.redis.DLQJobs(ctx)
 
 	active := 0
 	for _, w := range workers {
@@ -141,7 +142,7 @@ func (h *Handler) GetMetrics(w http.ResponseWriter, r *http.Request) {
 		TotalEnqueued:  counters["dispatch:counter:enqueued"],
 		TotalCompleted: counters["dispatch:counter:completed"],
 		TotalFailed:    counters["dispatch:counter:failed"],
-		TotalDead:      counters["dispatch:counter:dead"],
+		TotalDead:      int64(len(dlqJobs)),
 		ActiveWorkers:  active,
 		WorkerStats:    make([]models.WorkerStatus, len(workers)),
 	}
