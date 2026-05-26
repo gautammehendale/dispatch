@@ -1,4 +1,4 @@
-import { LucideIcon, LayoutDashboard, Layers, Users, AlertTriangle, PlusCircle, Activity } from 'lucide-react';
+import { type LucideIcon, LayoutDashboard, Layers, Users, AlertTriangle, PlusCircle, Activity } from 'lucide-react';
 
 interface NavItem {
   icon: LucideIcon;

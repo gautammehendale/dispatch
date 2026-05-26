@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEnqueue } from '../hooks/useJobs';
 import { CheckCircle2, Send } from 'lucide-react';
-import { Job } from '../types';
+import type { Job } from '../types';
 
 const JOB_TYPES = ['send_email', 'process_payment', 'resize_image', 'generate_report', 'sync_data'];
 const PRIORITIES = ['CRITICAL', 'HIGH', 'NORMAL', 'LOW'];

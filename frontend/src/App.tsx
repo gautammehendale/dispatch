@@ -8,7 +8,7 @@ import DLQ from './pages/DLQ';
 import Enqueue from './pages/Enqueue';
 import { useMetrics } from './hooks/useMetrics';
 import { useWebSocket } from './hooks/useWebSocket';
-import { WSEvent } from './types';
+import type { WSEvent } from './types';
 import './index.css';
 
 const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8080/ws';

@@ -153,11 +153,11 @@ func (e *Engine) CancelJob(ctx context.Context, id string) error {
 
 // backoffDuration computes exponential backoff: 5s, 25s, 125s, ...
 func backoffDuration(attempts int) time.Duration {
-	base := 5 * time.Second
+	base := 3 * time.Second
 	for i := 0; i < attempts; i++ {
-		base *= 5
-		if base > 10*time.Minute {
-			return 10 * time.Minute
+		base *= 3
+		if base > 30*time.Second {
+			return 30 * time.Second
 		}
 	}
 	return base

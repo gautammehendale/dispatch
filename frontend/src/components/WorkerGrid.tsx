@@ -1,4 +1,4 @@
-import { WorkerStatus } from '../types';
+import type { WorkerStatus } from '../types';
 import { formatDistanceToNow } from 'date-fns';
 import { Cpu } from 'lucide-react';
 

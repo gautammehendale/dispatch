@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { QueueStats } from '../types';
+import type { QueueStats } from '../types';
 
 interface Props { queues: QueueStats[]; }
 

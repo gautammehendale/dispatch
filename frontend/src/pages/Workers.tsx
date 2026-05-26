@@ -1,4 +1,4 @@
-import { Metrics } from '../types';
+import type { Metrics } from '../types';
 import WorkerGrid from '../components/WorkerGrid';
 import { Users } from 'lucide-react';
 

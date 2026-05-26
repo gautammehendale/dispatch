@@ -3,7 +3,7 @@ import MetricCard from '../components/MetricCard';
 import ThroughputChart from '../components/ThroughputChart';
 import QueueDepthChart from '../components/QueueDepthChart';
 import WorkerGrid from '../components/WorkerGrid';
-import { Metrics, ThroughputPoint } from '../types';
+import type { Metrics, ThroughputPoint } from '../types';
 
 interface Props { metrics: Metrics; throughput: ThroughputPoint[]; loading: boolean; }
 

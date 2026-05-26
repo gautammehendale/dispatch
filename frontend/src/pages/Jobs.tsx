@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RefreshCw, Search } from 'lucide-react';
 import JobTable from '../components/JobTable';
 import { useJobs } from '../hooks/useJobs';
-import { JobStatus } from '../types';
+import type { JobStatus } from '../types';
 
 const STATUSES: { label: string; value: JobStatus | '' }[] = [
   { label: 'All',       value: '' },

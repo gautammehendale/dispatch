@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Metrics, ThroughputPoint } from '../types';
+import type { Metrics, ThroughputPoint } from '../types';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 

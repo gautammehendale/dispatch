@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { WSEvent } from '../types';
+import type { WSEvent } from '../types';
 
 type Handler = (event: WSEvent) => void;
 

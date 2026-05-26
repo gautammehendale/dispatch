@@ -1,4 +1,4 @@
-import { Job, JobStatus } from '../types';
+import type { Job, JobStatus } from '../types';
 import { formatDistanceToNow } from 'date-fns';
 import { RotateCcw, X, ChevronRight } from 'lucide-react';
 

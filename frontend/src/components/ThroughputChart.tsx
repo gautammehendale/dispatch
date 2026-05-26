@@ -1,7 +1,7 @@
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
-import { ThroughputPoint } from '../types';
+import type { ThroughputPoint } from '../types';
 
 interface Props { data: ThroughputPoint[]; }
 

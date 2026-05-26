@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Job } from '../types';
+import type { Job } from '../types';
 import JobTable from '../components/JobTable';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 

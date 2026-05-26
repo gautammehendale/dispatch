@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Pause, Play, Trash2, Activity } from 'lucide-react';
-import { QueueStats } from '../types';
+import type { QueueStats } from '../types';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
