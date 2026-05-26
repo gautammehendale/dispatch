@@ -87,6 +87,7 @@ func (h *Handler) RetryJob(w http.ResponseWriter, r *http.Request) {
 	job.Status = models.StatusPending
 	job.Attempts = 0
 	job.Error = ""
+	_ = h.redis.RemoveFromDLQ(r.Context(), id)
 	if err := h.redis.Enqueue(r.Context(), job); err != nil {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return

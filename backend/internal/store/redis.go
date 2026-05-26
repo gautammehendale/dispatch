@@ -226,11 +226,15 @@ func (r *RedisStore) DLQJobs(ctx context.Context) ([]*models.Job, error) {
 	jobs := make([]*models.Job, 0, len(ids))
 	for _, id := range ids {
 		job, err := r.GetJob(ctx, id)
-		if err == nil {
+		if err == nil && job.Status == models.StatusDead {
 			jobs = append(jobs, job)
 		}
 	}
 	return jobs, nil
+}
+
+func (r *RedisStore) RemoveFromDLQ(ctx context.Context, id string) error {
+	return r.client.LRem(ctx, "dispatch:dlq", 0, id).Err()
 }
 
 func (r *RedisStore) Client() *redis.Client {
