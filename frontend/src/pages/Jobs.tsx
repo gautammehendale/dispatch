@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RefreshCw, Search } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import JobTable from '../components/JobTable';
 import { useJobs } from '../hooks/useJobs';
 import type { JobStatus } from '../types';

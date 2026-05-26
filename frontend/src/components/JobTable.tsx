@@ -1,6 +1,6 @@
 import type { Job, JobStatus } from '../types';
 import { formatDistanceToNow } from 'date-fns';
-import { RotateCcw, X, ChevronRight } from 'lucide-react';
+import { RotateCcw, X } from 'lucide-react';
 
 const PRIORITY_LABELS: Record<number, string> = { 4: 'CRITICAL', 3: 'HIGH', 2: 'NORMAL', 1: 'LOW' };
 const PRIORITY_COLORS: Record<number, string> = {
