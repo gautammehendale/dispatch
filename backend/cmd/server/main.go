@@ -56,7 +56,7 @@ func main() {
 	})
 	pool.Register("resize_image", func(ctx context.Context, job *models.Job) error {
 		log.Printf("[handler] resize_image: url=%v", job.Payload["url"])
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(3 * time.Second)
 		return nil
 	})
 
