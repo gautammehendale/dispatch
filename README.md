@@ -273,5 +273,5 @@ MIT — see [LICENSE](LICENSE)
 ---
 
 <div align="center">
-  Built by <a href="https://github.com/gautammehendale">Gautam Mehendale</a>
+  Built by <a href="https://github.com/gautammehendale">Gautam Mehendale</a> with some assistance from Claude (Anthropic) for boilerplate and debugging.
 </div>
