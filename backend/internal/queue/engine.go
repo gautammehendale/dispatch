@@ -140,8 +140,8 @@ func (e *Engine) CancelJob(ctx context.Context, id string) error {
 	if err != nil {
 		return fmt.Errorf("job not found: %w", err)
 	}
-	if job.Status != models.StatusPending {
-		return fmt.Errorf("can only cancel pending jobs")
+	if job.Status != models.StatusPending && job.Status != models.StatusRetrying {
+		return fmt.Errorf("can only cancel pending or retrying jobs")
 	}
 	job.Status = models.StatusCancelled
 	job.UpdatedAt = time.Now()

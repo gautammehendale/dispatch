@@ -114,7 +114,7 @@ export default function JobTable({ jobs, loading, onRetry, onCancel, showActions
                         <RotateCcw size={11} /> Retry
                       </button>
                     )}
-                    {job.status === 'pending' && onCancel && (
+                    {(job.status === 'pending' || job.status === 'retrying') && onCancel && (
                       <button
                         onClick={() => onCancel(job.id)}
                         style={{
